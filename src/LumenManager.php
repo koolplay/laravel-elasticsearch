@@ -1,8 +1,6 @@
-<?php
+<?php namespace Cviebrock\LaravelElasticsearch;
 
-namespace Cviebrock\LaravelElasticsearch;
-
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Foundation\Application;
 
 
 /**
@@ -10,128 +8,122 @@ use Illuminate\Contracts\Foundation\Application;
  *
  * @package Cviebrock\LaravelElasticsearch
  */
-class LumenManager
-{
+class LumenManager {
 
-    /**
-     * The application instance.
-     *
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    protected $app;
+	/**
+	 * The application instance.
+	 *
+	 * @var \Illuminate\Foundation\Application
+	 */
+	protected $app;
 
-    /**
-     * The Elasticsearch connection factory instance.
-     *
-     * @var Factory
-     */
-    protected $factory;
+	/**
+	 * The Elasticsearch connection factory instance.
+	 *
+	 * @var Factory
+	 */
+	protected $factory;
 
-    /**
-     * The active connection instances.
-     *
-     * @var array
-     */
-    protected $connections = [];
+	/**
+	 * The active connection instances.
+	 *
+	 * @var array
+	 */
+	protected $connections = [];
 
-    /**
-     * @param Application $app
-     * @param Factory $factory
-     */
-    public function __construct($app, Factory $factory)
-    {
-        $this->app = $app;
-        $this->factory = $factory;
-    }
+	/**
+	 * @param Application $app
+	 * @param Factory $factory
+	 */
+	public function __construct($app, Factory $factory) {
 
-    /**
-     * Retrieve or build the named connection.
-     *
-     * @param null $name
-     * @return \Elasticsearch\Client|mixed
-     */
-    public function connection($name = null)
-    {
-        $name = $name ?: $this->getDefaultConnection();
+		$this->app = $app;
+		$this->factory = $factory;
+	}
 
-        if (!isset($this->connections[$name])) {
-            $client = $this->makeConnection($name);
+	/**
+	 * Retrieve or build the named connection.
+	 *
+	 * @param null $name
+	 * @return \Elasticsearch\Client|mixed
+	 */
+	public function connection($name = null) {
 
-            $this->connections[$name] = $client;
-        }
+		$name = $name ?: $this->getDefaultConnection();
 
-        return $this->connections[$name];
-    }
+		if (!isset($this->connections[$name])) {
+			$client = $this->makeConnection($name);
 
-    /**
-     * Get the default connection.
-     *
-     * @return string
-     */
-    public function getDefaultConnection()
-    {
-        return $this->app['config']['elasticsearch.defaultConnection'];
-    }
+			$this->connections[$name] = $client;
+		}
 
-    /**
-     * Set the default connection.
-     *
-     * @param string $connection
-     */
-    public function setDefaultConnection($connection)
-    {
-        $this->app['config']['elasticsearch.defaultConnection'] = $connection;
-    }
+		return $this->connections[$name];
+	}
 
-    /**
-     * Make a new connection.
-     *
-     * @param $name
-     * @return \Elasticsearch\Client|mixed
-     */
-    protected function makeConnection($name)
-    {
-        $config = $this->getConfig($name);
+	/**
+	 * Get the default connection.
+	 *
+	 * @return string
+	 */
+	public function getDefaultConnection() {
+		return $this->app['config']['elasticsearch.defaultConnection'];
+	}
 
-        return $this->factory->make($config);
-    }
+	/**
+	 * Set the default connection.
+	 *
+	 * @param string $connection
+	 */
+	public function setDefaultConnection($connection) {
+		$this->app['config']['elasticsearch.defaultConnection'] = $connection;
+	}
 
-    /**
-     * Get the configuration for a named connection.
-     *
-     * @param $name
-     * @return mixed
-     */
-    protected function getConfig($name)
-    {
-        $connections = $this->app['config']['elasticsearch.connections'];
+	/**
+	 * Make a new connection.
+	 *
+	 * @param $name
+	 * @return \Elasticsearch\Client|mixed
+	 */
+	protected function makeConnection($name) {
+		$config = $this->getConfig($name);
 
-        if (is_null($config = array_get($connections, $name))) {
-            throw new \InvalidArgumentException("Elasticsearch connection [$name] not configured.");
-        }
+		return $this->factory->make($config);
+	}
 
-        return $config;
-    }
+	/**
+	 * Get the configuration for a named connection.
+	 *
+	 * @param $name
+	 * @return mixed
+	 */
+	protected function getConfig($name) {
 
-    /**
-     * Return all of the created connections.
-     *
-     * @return array
-     */
-    public function getConnections()
-    {
-        return $this->connections;
-    }
+		$connections = $this->app['config']['elasticsearch.connections'];
 
-    /**
-     * Dynamically pass methods to the default connection.
-     *
-     * @param  string $method
-     * @param  array $parameters
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        return call_user_func_array([$this->connection(), $method], $parameters);
-    }
+		if (is_null($config = array_get($connections, $name))) {
+			throw new \InvalidArgumentException("Elasticsearch connection [$name] not configured.");
+		}
+
+		return $config;
+	}
+
+	/**
+	 * Return all of the created connections.
+	 *
+	 * @return array
+	 */
+	public function getConnections() {
+		return $this->connections;
+	}
+
+	/**
+	 * Dynamically pass methods to the default connection.
+	 *
+	 * @param  string $method
+	 * @param  array $parameters
+	 * @return mixed
+	 */
+	public function __call($method, $parameters) {
+		return call_user_func_array([$this->connection(), $method], $parameters);
+	}
 }
