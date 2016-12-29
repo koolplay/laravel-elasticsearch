@@ -1,6 +1,6 @@
 {
-	"name": "cviebrock/laravel-elasticsearch",
-	"description": "An easy way to use the official PHP ElasticSearch client in your Laravel applications.",
+	"name": "koolplay/laravel-elasticsearch",
+	"description": "An easy way to use the official PHP ElasticSearch client in your Laravel applications. Duplicated for Laravel4 / Elasticsearch5",
 	"keywords": [
 		"laravel",
 		"elasticsearch",
