@@ -161,6 +161,13 @@ return [
 
 			'endpoint' => null,
 
+			/**
+			 * Namespaces
+			 *
+			 * add any additional Elasticsearch\Namespaces\NamespaceBuilderInterface here as array (ie. xpack)
+			 */
+
+			'namespaces' => null,
 		]
 	]
 

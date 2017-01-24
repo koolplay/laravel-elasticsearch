@@ -99,6 +99,14 @@ class Factory {
 			$clientBuilder->setEndpoint($config['endpoint']);
 		}
 
+		// Configure Namespaces
+
+		if ($config['namespaces'] !== null) {
+			foreach($config['namespaces'] as $namespace){
+				$clientBuilder->registerNamespace($namespace);
+			}
+		}
+
 		// Build and return the client
 
 		return $clientBuilder->build();
