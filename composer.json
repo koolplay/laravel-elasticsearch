@@ -10,7 +10,7 @@
 	"require": {
 		"php": ">=5.4.0",
 		"elasticsearch/elasticsearch": "~5.0",
-	  	"elasticsearch/xpack" : "~5.0",
+	  	"elasticsearch/xpack" : "dev-~5.0",
 		"illuminate/support": "~4|~5",
 		"monolog/monolog": "~1"
 	},
@@ -30,6 +30,12 @@
 			"Cviebrock\\LaravelElasticsearch\\": "src/"
 		}
 	},
+  	"repositories": [
+	  {
+		"type": "vcs",
+		"url": "https://github.com/koolplay/elasticsearch-x-pack-php"
+	  }
+	],
 	"minimum-stability": "stable",
 	"prefer-stable": true
 }
