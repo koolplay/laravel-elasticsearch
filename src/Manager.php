@@ -75,7 +75,9 @@ class Manager {
 	 * @param string $connection
 	 */
 	public function setDefaultConnection($connection) {
-		$this->app['config']['elasticsearch.defaultConnection'] = $connection;
+		if(!empty($connection)){
+			$this->app['config']['elasticsearch.defaultConnection'] = $connection;
+		}
 	}
 
 	/**
